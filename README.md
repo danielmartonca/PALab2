@@ -1,5 +1,7 @@
 # Laboratory 2
 
+At the last laboratory i finished the tasks Bonus and Optional.
+
 This repository is for the tasks given at laboratory 2. I managed to finish: Compulsory
 
 ## Compulsory
