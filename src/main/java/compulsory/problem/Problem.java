@@ -3,6 +3,8 @@ package compulsory.problem;
 import compulsory.locations.Destination;
 import compulsory.locations.Source;
 
+import java.util.Arrays;
+
 /**
  * The class Problem's purpose for compulsory task is only to store an instance of the transportation problem
  * and print it out on the screen.
@@ -111,6 +113,19 @@ public class Problem {
     }
 
     /**
+     * Override of the toString function of the root class Object.
+     * @return a string containing the class members names and values
+     */
+    @Override
+    public String toString() {
+        return "Problem{" +
+                "sources=" + Arrays.toString(sources) +
+                ", destinations=" + Arrays.toString(destinations) +
+                ", costMatrix=" + Arrays.toString(costMatrix) +
+                '}';
+    }
+
+    /**
      * Method that prints to the screen the instance of the problem under the form of:
      *          Destinatie1   Destinatie2   Destinatie3 ...     Supply
      * Sursa1     2              3              1       ...       10
@@ -118,6 +133,9 @@ public class Problem {
      * Sursa3     5              6              8       ...       25
      * ...
      * Demand     20             25             25      ...
+     *
+     * I decided to implement the method print because it's much easier to read the information
+     * under this form than using toString method.
      */
     public void print() {
         System.out.print("        ");

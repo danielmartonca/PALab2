@@ -48,4 +48,15 @@ public class Destination {
         return name;
     }
 
+    /**
+     * Override of the toString function of the root class Object.
+     * @return a string containing the class members names and values
+     */
+    @Override
+    public String toString() {
+        return "Destination{" +
+                "demand=" + demand +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
