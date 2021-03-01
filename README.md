@@ -52,7 +52,6 @@ The task consists of:<br />
 - [x]  Create and print on the screen the instance of the problem described in the example.<br />
 
 
-I ran the code using the latest version of Intellij without<br />
 Here is the output i recieved:<br />
 ```dif
         Destinatie1   Destinatie2   Destinatie3       Supply
@@ -62,6 +61,24 @@ Sursa3     5              6              8              25
 Demand     20             25             25             
 ```
 ## Optional
-Not yet worked on.
+The task consists of:<br />
+
+- [x] Create an object-oriented model of the problem. You should have (at least) the following classes: Source, Destination, Problem.
+  The sources and the destinations have names. The sources will also have the property type. The available types will be implemented as an enum . For example:<br />
+  <br /> public enum SourceType {<br />
+  WAREHOUSE, FACTORY;
+  <br />}<br /><br />
+  Assume S1 is a factory and S2, S3 are warehouses.
+- [x] Each class should have appropriate constructors, getters and setters.
+  Use the IDE features for code generation, such as generating getters and setters. <br />
+- [x] The toString method form the Object class must be properly overridden for all the classes. <br />
+- [x] Use the IDE features for code generation, for example (in NetBeans) press Alt+Ins or invoke the context menu, select "Insert Code" and then "toString()" (or simply start typing "toString" and then press Ctrl+Space).
+- [x]  Create and print on the screen the instance of the problem described in the example.<br />
+
+
+Here is the output i recieved:<br />
+```dif
+     ====
+```
 ## Bonus
 Not yet worked on.
