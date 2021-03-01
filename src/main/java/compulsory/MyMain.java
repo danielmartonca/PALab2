@@ -1,4 +1,4 @@
-package compulsory.main;
+package compulsory;
 
 import compulsory.locations.SourceType;
 import compulsory.locations.Destination;
