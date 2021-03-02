@@ -53,15 +53,16 @@ public abstract class Source {
 
     /**
      * Abstract override of the toString function of the root class Object.
+     *
      * @return a string containing the class members names and values
      */
     @Override
-    public abstract String toString() ;
+    public abstract String toString();
 
     @Override
     public boolean equals(Object obj) {
         //if the reference is the same
-        if (this==obj)
+        if (this == obj)
             return true;
 
         //alternative way of testing if two Source objects are the same

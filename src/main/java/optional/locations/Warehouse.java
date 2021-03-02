@@ -1,9 +1,9 @@
 package optional.locations;
 
-public class Warehouse extends Source{
+public class Warehouse extends Source {
 
-    public Warehouse(int supply,String name) {
-        super(supply,name);
+    public Warehouse(int supply, String name) {
+        super(supply, name);
     }
 
     @Override

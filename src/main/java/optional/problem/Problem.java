@@ -7,8 +7,6 @@ import optional.locations.Source;
 import optional.locations.Warehouse;
 import optional.solution.Solution;
 
-import javax.crypto.spec.PSource;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,21 +51,6 @@ public class Problem {
             System.arraycopy(costMatrix[i], 0, this.costMatrix[i], 0, destinations.size());
     }
 
-
-    private int getSupplyOfIndex(int index) {
-        if (index < factories.size())
-            return factories.get(index).getSupply();
-        else
-            return warehouses.get(index).getSupply();
-    }
-
-    private String getNameOfIndex(int index) {
-        if (index < factories.size())
-            return factories.get(index).getName();
-        else
-            return warehouses.get(index).getName();
-    }
-
     private int findMinimumCostLineNr(int column) {
         int minimumCostLine = 0;
         int minimumCost = Integer.MAX_VALUE;
@@ -97,52 +80,40 @@ public class Problem {
     /**
      * This method solves the problem and returns an object of type Solution to store the solution.
      *
-     * @return ??
+     * @return An object of type Solution which stores a list of strings and a total cost
      */
-    public Solution solve() {
+    public Solution solveNonOptimal() {
         Solution solution = new Solution();
 
-        //for each destination we satisfy the demand
+        List<Source> sources = new LinkedList<>();
+        sources.addAll(factories);
+        sources.addAll(warehouses);
+
         int nrDestination = -1;
         for (Destination destination : destinations) {
             nrDestination++;
-
             //as long as the demand is higher than 0
             while (destination.getDemand() > 0) {
                 //find the minimum cost source index for the destination
                 int minCostLine = findMinimumCostLineNr(nrDestination);
+                Source sourceMin = sources.get(minCostLine);
 
-                Pair<String, String> pair;
+                Pair<String, String> pair = new Pair<>(sourceMin.getName(), destination.getName());
                 int cost = 0;
 
-                pair = new Pair<>(getNameOfIndex(minCostLine), destination.getName());
-                //calculate cost
-                if (getSupplyOfIndex(minCostLine) > destination.getDemand()) {
-                    cost += destination.getDemand() * costMatrix[minCostLine][nrDestination];
-
-                    if (minCostLine < factories.size())
-                        factories.get(minCostLine).setSupply(factories.get(minCostLine).getSupply() - destination.getDemand());
-                    else
-                        warehouses.get(minCostLine - factories.size()).setSupply(warehouses.get(minCostLine - factories.size()).getSupply() - destination.getDemand());
-
+                if (sourceMin.getSupply() > destination.getDemand()) {
+                    cost += costMatrix[minCostLine][nrDestination] * destination.getDemand();
+                    sourceMin.setSupply(sourceMin.getSupply() - destination.getDemand());
                     destination.setDemand(0);
                 } else {
-
-                    if (minCostLine < factories.size()) {
-                        cost += factories.get(minCostLine).getSupply() * costMatrix[minCostLine][nrDestination];
-                        destination.setDemand(destination.getDemand() - factories.get(minCostLine).getSupply());
-                        factories.get(minCostLine).setSupply(0);
-                    } else {
-                        cost += warehouses.get(minCostLine - factories.size()).getSupply() * costMatrix[minCostLine][nrDestination];
-                        destination.setDemand(destination.getDemand() - warehouses.get(minCostLine - factories.size()).getSupply());
-                        warehouses.get(minCostLine - factories.size()).setSupply(0);
-                    }
+                    cost += costMatrix[minCostLine][nrDestination] * sourceMin.getSupply();
+                    destination.setDemand(destination.getDemand() - sourceMin.getSupply());
+                    sourceMin.setSupply(0);
                 }
                 solution.addSolution(pair, cost);
             }
-        }
-        //satisfy as long as you can
 
+        }
         return solution;
     }
 }

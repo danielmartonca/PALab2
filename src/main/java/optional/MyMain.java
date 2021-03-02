@@ -30,7 +30,7 @@ public class MyMain {
         };
         problem.setCostMatrix(costMatrix);
 
-        Solution solution = problem.solve();
+        Solution solution = problem.solveNonOptimal();
         solution.printSolution();
     }
 }

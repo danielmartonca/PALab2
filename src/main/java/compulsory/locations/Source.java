@@ -64,6 +64,7 @@ public class Source {
 
     /**
      * Override of the toString function of the root class Object.
+     *
      * @return a string containing the class members names and values
      */
     @Override

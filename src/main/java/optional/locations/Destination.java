@@ -50,6 +50,7 @@ public class Destination {
 
     /**
      * Override of the toString function of the root class Object.
+     *
      * @return a string containing the class members names and values
      */
     @Override
@@ -64,14 +65,15 @@ public class Destination {
      * Override of the method equals of class Object. This method tests if two objects are the same.
      * I assumed that two objects of type Destination are the same if they have the same toString value.
      * This means that two objects of type Destination can have the same name as long that their demand is different.
+     *
      * @param obj the object to check whether it's equal to this or not
-     * @return  true if they are equal; false if they are not equal
+     * @return true if they are equal; false if they are not equal
      */
     @Override
     public boolean equals(Object obj) {
 
         //if the reference is the same
-        if (this==obj)
+        if (this == obj)
             return true;
 
         //if they have the same toString value, it means they are equal

@@ -114,6 +114,7 @@ public class Problem {
 
     /**
      * Override of the toString function of the root class Object.
+     *
      * @return a string containing the class members names and values
      */
     @Override
@@ -127,13 +128,13 @@ public class Problem {
 
     /**
      * Method that prints to the screen the instance of the problem under the form of:
-     *          Destinatie1   Destinatie2   Destinatie3 ...     Supply
+     * Destinatie1   Destinatie2   Destinatie3 ...     Supply
      * Sursa1     2              3              1       ...       10
      * Sursa2     5              4              8       ...       35
      * Sursa3     5              6              8       ...       25
      * ...
      * Demand     20             25             25      ...
-     *
+     * <p>
      * I decided to implement the method print because it's much easier to read the information
      * under this form than using toString method.
      */
