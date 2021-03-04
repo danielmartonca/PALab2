@@ -59,6 +59,12 @@ public abstract class Source {
     @Override
     public abstract String toString();
 
+    /**
+     * Overridden method equals
+     *
+     * @param obj the object to test equality with
+     * @return boolean value. True if the objects are equal, false if they are not equal.
+     */
     @Override
     public boolean equals(Object obj) {
         //if the reference is the same

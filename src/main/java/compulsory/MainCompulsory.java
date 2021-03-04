@@ -10,7 +10,7 @@ import compulsory.locations.Source;
  * and print it on the screen.
  * We create 3
  */
-public class MyMain {
+public class MainCompulsory {
     public static void main(String[] args) {
 
         // create an array of object of type Source

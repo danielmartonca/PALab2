@@ -6,19 +6,18 @@ import bonus.solution.Solution;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * The class Problem's purpose for compulsory task is only to store an instance of the transportation problem
- * and print it out on the screen.
+ * The class Problem's purpose for bonus task is to store an instance of the transportation problem
+ * print it out on the screen and solve it using an optimal method
  * It has an array of Source type objects, an array of Destination type objects
  * and an matrix of size source.length X destination.length corresponding to the cost matrix of the problem.
  */
 public class Problem {
-    private Source[] sources;
-    private Destination[] destinations;
-    private int[][] costMatrix;
+    private final Source[] sources;
+    private final Destination[] destinations;
+    private final int[][] costMatrix;
 
     /**
      * Constructor for the Problem object
@@ -71,31 +70,32 @@ public class Problem {
 
         System.out.print("Demand     ");
         for (Destination destination : destinations) System.out.print(destination.getDemand() + "             ");
+        System.out.println(" ");
     }
 
     /**
      * This method find a list of pairs  < rowDifference,row > used to solve the problem
      *
-     * @return an ArrayList list containing the requested values
+     * @return an ArrayList list containing the the Column Differences values used to solve the problem
      */
     private List<Pair<Integer, Integer>> getColumnDifference() {
-
+        //create and allocate the memory for the list
         List<Pair<Integer, Integer>> columnDifference = new ArrayList<>(destinations.length);
-
+        //go trough each column/destination
         for (int j = 0; j < destinations.length; j++)
-            if (destinations[j].getDemand() > 0) {
+            if (destinations[j].getDemand() > 0) {  //if the destination's demand is not yet met
                 //find the least two costs on the row
                 int minValue1 = -1, minValue2 = -1;
                 for (int i = 0; i < sources.length; i++) {
                     //get the cost
                     int cost = costMatrix[i][j];
-                    if (sources[i].getSupply() != 0) {
+                    if (sources[i].getSupply() != 0) {  //if there is still supply in the source
                         if (minValue1 == -1) {  //if we didn't set the first value yet
                             minValue1 = cost;
                         } else if (minValue2 == -1) //if we didn't set the second value yet
                         {
                             minValue2 = cost;
-                            if (minValue2 < minValue1) {
+                            if (minValue2 < minValue1) {    //swap the values if minValue2 is lower than minValue1
                                 int aux = minValue1;
                                 minValue1 = minValue2;
                                 minValue2 = aux;
@@ -118,6 +118,13 @@ public class Problem {
         return columnDifference;
     }
 
+    /**
+     * This method is very similar to getColumnDifference, the only difference being that it calculates
+     * the difference on the rows instead of the columns
+     * It first goes trough the source's array then the destination's array
+     *
+     * @return an ArrayList list containing the the Row Differences values used to solve the problem
+     */
     private List<Pair<Integer, Integer>> getRowDifference() {
 
         List<Pair<Integer, Integer>> rowDifference = new ArrayList<>(sources.length);
@@ -159,6 +166,12 @@ public class Problem {
         return rowDifference;
     }
 
+    /**
+     * This method goes trough the element's of the parameter list and finds the maximum key in the pairs
+     *
+     * @param list A list of Pairs < Integer,Integer > containing the penalty and the row/column it is found on
+     * @return the pair where the maximum penalty is found
+     */
     private Pair<Integer, Integer> findMaxPenalty(List<Pair<Integer, Integer>> list) {
 
         Pair<Integer, Integer> max = list.get(0);
@@ -168,6 +181,12 @@ public class Problem {
         return max;
     }
 
+    /**
+     * This method finds the minimum cost column in the matrix at the row specified
+     *
+     * @param row the row to find the minimum cost
+     * @return the column it was found on
+     */
     private int getColumnOfMinCostRow(int row) {
 
         int min = -1, posMin = -1;
@@ -184,6 +203,12 @@ public class Problem {
         return posMin;
     }
 
+    /**
+     * This method finds the minimum cost row in the matrix at the column specified
+     *
+     * @param column the column to find the minimum cost
+     * @return the row it was found on
+     */
     private int getRowOfMinCostColumn(int column) {
 
         int min = -1, posMin = -1;
@@ -200,12 +225,35 @@ public class Problem {
         return posMin;
     }
 
-    private int getDestinationsSatisfied() {
-        int nr = 0;
+    /**
+     * This method is used to check whether we still have at least one demand to satisfy
+     * It returns true if at least one demand > 0 was found
+     *
+     * @return true if one demand >0 was found, false otherwise
+     */
+    private boolean findDemandUnsatisfied() {
+
         for (Destination destination : destinations)
             if (destination.getDemand() != 0)
-                nr++;
-        return nr;
+                return true;
+        return false;
+    }
+
+    /**
+     * This methods checks whether the sum of the demands >= the sum of the supply
+     *
+     * @return true if there is enough supply to satisfy the demands, false otherwise
+     */
+    private boolean checkIfProblemHasSolution() {
+        int demandsSum = 0;
+
+        for (Source source : sources)
+            demandsSum += source.getSupply();
+
+        for (Destination destination : destinations)
+            demandsSum -= destination.getDemand();
+
+        return demandsSum >= 0;
     }
 
     /**
@@ -217,18 +265,18 @@ public class Problem {
      */
     public Solution solve() {
         Solution solution = new Solution();
-
-        //calculate how many demands we have to satisfy
-        int remainingDemandsToSatisfy = getDestinationsSatisfied();
-
+        //check if problem has solution first
+        if (!checkIfProblemHasSolution()) {
+            solution.addSolution(new Pair<>("Problem does not have solution", " invalid input."), -1);
+            return solution;
+        }
         //until we satisfy all demands / solve the problem
-        while (remainingDemandsToSatisfy != 0) {
-
+        do {
+            //find the max penalty
             Pair<Integer, Integer> maxPenaltyRow = findMaxPenalty(getRowDifference());
             Pair<Integer, Integer> maxPenaltyColumn = findMaxPenalty(getColumnDifference());
 
             int row, column, cost = 0;
-
             //if it's a row
             if (maxPenaltyRow.getKey() > maxPenaltyColumn.getKey()) {
                 row = maxPenaltyRow.getValue();
@@ -248,8 +296,9 @@ public class Problem {
                 sources[row].setSupply(0);
             }
             solution.addSolution(new Pair<>(sources[row].getName(), destinations[column].getName()), cost);
-            remainingDemandsToSatisfy = getDestinationsSatisfied();
+
         }
+        while (findDemandUnsatisfied());
 
         return solution;
     }

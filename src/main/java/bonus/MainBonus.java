@@ -11,7 +11,7 @@ import bonus.solution.Solution;
  * and find the lowest cost solution to the problem.
  * We create 3
  */
-public class MyMain {
+public class MainBonus {
     public static void main(String[] args) {
 
         // create an array of object of type Source
